@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- The driver every log channel writes through. -->
+    <type name="Commerce\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+
+    <!--
+        Base handler: writes var/log/commerce/default.log, rotated daily, 7
+        files kept.
+    -->
+    <virtualType name="Commerce\Logger\Handler\Base" type="Commerce\Logger\Handler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">default.log</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Base logger channel. -->
+    <virtualType name="Commerce\Logger\Logger\Base" type="Commerce\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">commerce</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Commerce\Logger\Handler\Base</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+</config>
