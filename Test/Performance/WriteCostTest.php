@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * What logging costs the filesystem.
  */
-final class WriteCostTest extends TestCase
+class WriteCostTest extends TestCase
 {
     private int $pathLookups = 0;
     private int $directoryProbes = 0;
@@ -67,7 +67,7 @@ final class WriteCostTest extends TestCase
             $costs[$records] = $this->pathLookups + $this->directoryProbes;
         }
 
-        self::assertSame(
+        $this->assertSame(
             $costs[1],
             $costs[500],
             sprintf(
@@ -87,8 +87,8 @@ final class WriteCostTest extends TestCase
     {
         $this->channel();
 
-        self::assertSame(1, $this->pathLookups, 'var/log should be resolved once per handler.');
-        self::assertSame(1, $this->directoryProbes, 'The directory should be asked about once when it is there.');
+        $this->assertSame(1, $this->pathLookups, 'var/log should be resolved once per handler.');
+        $this->assertSame(1, $this->directoryProbes, 'The directory should be asked about once when it is there.');
     }
 
     /**
@@ -104,7 +104,7 @@ final class WriteCostTest extends TestCase
             $this->channel();
         }
 
-        self::assertSame(
+        $this->assertSame(
             $afterOne * 12,
             $this->pathLookups + $this->directoryProbes,
             'Twelve channels should cost twelve times one channel, and no more.'

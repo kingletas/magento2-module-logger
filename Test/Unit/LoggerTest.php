@@ -20,16 +20,16 @@ use PHPUnit\Framework\TestCase;
  * The class adds no behaviour, and the two contracts di.xml relies on still
  * hold.
  */
-final class LoggerTest extends TestCase
+class LoggerTest extends TestCase
 {
     public function testItIsAPsrLoggerSoConsumersCanTypeHintTheFrameworkInterface(): void
     {
-        self::assertInstanceOf(LoggerInterface::class, new Logger('commerce'));
+        $this->assertInstanceOf(LoggerInterface::class, new Logger('commerce'));
     }
 
     public function testItIsAMonologLoggerSoHandlersAndProcessorsWorkUnchanged(): void
     {
-        self::assertInstanceOf(MonologLogger::class, new Logger('commerce'));
+        $this->assertInstanceOf(MonologLogger::class, new Logger('commerce'));
     }
 
     /**
@@ -37,7 +37,7 @@ final class LoggerTest extends TestCase
      */
     public function testTheConstructorNameBecomesTheChannel(): void
     {
-        self::assertSame('commerce_healthcheck', (new Logger('commerce_healthcheck'))->getName());
+        $this->assertSame('commerce_healthcheck', (new Logger('commerce_healthcheck'))->getName());
     }
 
     public function testHandlersPassedInAreTheOnesUsed(): void
@@ -47,7 +47,7 @@ final class LoggerTest extends TestCase
 
         $logger->warning('a queue consumer rethrew');
 
-        self::assertTrue($handler->hasWarningThatContains('a queue consumer rethrew'));
+        $this->assertTrue($handler->hasWarningThatContains('a queue consumer rethrew'));
     }
 
     /**
@@ -61,8 +61,8 @@ final class LoggerTest extends TestCase
 
         $records = $handler->getRecords();
 
-        self::assertCount(1, $records);
-        self::assertSame('commerce_search', $records[0]['channel']);
+        $this->assertCount(1, $records);
+        $this->assertSame('commerce_search', $records[0]['channel']);
     }
 
     public function testContextIsCarriedThroughToTheHandler(): void
@@ -72,7 +72,7 @@ final class LoggerTest extends TestCase
 
         $records = $handler->getRecords();
 
-        self::assertSame(['sku' => 'SKU-1'], $records[0]['context']);
+        $this->assertSame(['sku' => 'SKU-1'], $records[0]['context']);
     }
 
     /**
@@ -89,6 +89,6 @@ final class LoggerTest extends TestCase
                 (new \ReflectionMethod(Logger::class, $name))->getDeclaringClass()->getName() === Logger::class
         ));
 
-        self::assertSame([], $ownMethods, 'Custom behaviour belongs in a Handler or a Processor.');
+        $this->assertSame([], $ownMethods, 'Custom behaviour belongs in a Handler or a Processor.');
     }
 }

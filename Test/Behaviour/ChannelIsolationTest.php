@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Two channels, two files, and nothing in anybody else's.
  */
-final class ChannelIsolationTest extends TestCase
+class ChannelIsolationTest extends TestCase
 {
     private string $logRoot = '';
 
@@ -44,11 +44,11 @@ final class ChannelIsolationTest extends TestCase
         $orders->error('an order failed to place');
         $inventory->error('a stock sync failed');
 
-        self::assertStringContainsString('an order failed to place', $this->contentsOf('orders'));
-        self::assertStringNotContainsString('a stock sync failed', $this->contentsOf('orders'));
+        $this->assertStringContainsString('an order failed to place', $this->contentsOf('orders'));
+        $this->assertStringNotContainsString('a stock sync failed', $this->contentsOf('orders'));
 
-        self::assertStringContainsString('a stock sync failed', $this->contentsOf('inventory'));
-        self::assertStringNotContainsString('an order failed to place', $this->contentsOf('inventory'));
+        $this->assertStringContainsString('a stock sync failed', $this->contentsOf('inventory'));
+        $this->assertStringNotContainsString('an order failed to place', $this->contentsOf('inventory'));
     }
 
     /**
@@ -59,7 +59,7 @@ final class ChannelIsolationTest extends TestCase
     {
         $this->channel('commerce_orders', 'orders.log')->warning('a coupon was rejected');
 
-        self::assertStringContainsString('commerce_orders', $this->contentsOf('orders'));
+        $this->assertStringContainsString('commerce_orders', $this->contentsOf('orders'));
     }
 
     /**
@@ -75,8 +75,8 @@ final class ChannelIsolationTest extends TestCase
 
         $contents = $this->contentsOf('orders');
 
-        self::assertStringNotContainsString('routine, and not worth a line', $contents);
-        self::assertStringContainsString('not routine', $contents);
+        $this->assertStringNotContainsString('routine, and not worth a line', $contents);
+        $this->assertStringContainsString('not routine', $contents);
     }
 
     /**
@@ -87,7 +87,7 @@ final class ChannelIsolationTest extends TestCase
         $handler = $this->handler('orders.log');
         $logger = new Logger('commerce_orders', [$handler]);
 
-        self::assertSame(
+        $this->assertSame(
             [$handler],
             $logger->getHandlers(),
             'A channel that inherits handlers duplicates every record into whatever they point at.'
@@ -105,7 +105,7 @@ final class ChannelIsolationTest extends TestCase
 
         $files = $this->logFiles();
 
-        self::assertCount(2, $files, 'Two channels, two files: ' . implode(', ', $files));
+        $this->assertCount(2, $files, 'Two channels, two files: ' . implode(', ', $files));
     }
 
     private function channel(string $name, string $fileName, string $level = 'debug'): Logger
@@ -131,7 +131,7 @@ final class ChannelIsolationTest extends TestCase
     {
         $matches = glob($this->logRoot . '/log/commerce/' . $stem . '-*.log') ?: [];
 
-        self::assertNotSame([], $matches, sprintf('Nothing was written for the "%s" channel.', $stem));
+        $this->assertNotSame([], $matches, sprintf('Nothing was written for the "%s" channel.', $stem));
 
         return (string) file_get_contents($matches[0]);
     }

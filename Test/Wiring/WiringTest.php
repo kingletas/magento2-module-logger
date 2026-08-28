@@ -17,7 +17,7 @@ use SimpleXMLElement;
 /**
  * This module's `etc/` against the code it names.
  */
-final class WiringTest extends TestCase
+class WiringTest extends TestCase
 {
     /**
      * Every XML file in `etc/` parses.
@@ -37,7 +37,7 @@ final class WiringTest extends TestCase
             libxml_use_internal_errors($previous);
         }
 
-        self::assertSame([], $broken, 'These files do not parse as XML: ' . implode(', ', $broken));
+        $this->assertSame([], $broken, 'These files do not parse as XML: ' . implode(', ', $broken));
     }
 
     public function testEveryVirtualTypeNamesAClassThatExists(): void
@@ -50,7 +50,7 @@ final class WiringTest extends TestCase
             }
         }
 
-        self::assertSame([], $missing, implode("\n  ", $missing));
+        $this->assertSame([], $missing, implode("\n  ", $missing));
     }
 
     /**
@@ -85,7 +85,7 @@ final class WiringTest extends TestCase
             }
         }
 
-        self::assertSame([], $unknown, implode("\n  ", $unknown));
+        $this->assertSame([], $unknown, implode("\n  ", $unknown));
     }
 
     /**
@@ -93,7 +93,7 @@ final class WiringTest extends TestCase
      */
     public function testTheBaseVirtualTypesKeepTheirPublishedNames(): void
     {
-        self::assertSame(
+        $this->assertSame(
             ['Commerce\Logger\Handler\Base', 'Commerce\Logger\Logger\Base'],
             array_keys($this->virtualTypes())
         );
@@ -136,7 +136,7 @@ final class WiringTest extends TestCase
     {
         $config = simplexml_load_file(dirname(__DIR__, 2) . '/etc/di.xml');
 
-        self::assertInstanceOf(SimpleXMLElement::class, $config, 'etc/di.xml did not parse.');
+        $this->assertInstanceOf(SimpleXMLElement::class, $config, 'etc/di.xml did not parse.');
 
         return $config;
     }

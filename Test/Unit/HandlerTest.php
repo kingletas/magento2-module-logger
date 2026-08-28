@@ -40,8 +40,8 @@ class HandlerTest extends TestCase
         $handler = new Handler($this->driver, $this->directoryList, 'orders.log', 'acme');
 
         // Monolog appends the rotation date, so assert on the directory and stem.
-        self::assertStringStartsWith('/srv/app/var/log/acme/orders-', (string) $handler->getUrl());
-        self::assertStringEndsWith('.log', (string) $handler->getUrl());
+        $this->assertStringStartsWith('/srv/app/var/log/acme/orders-', (string) $handler->getUrl());
+        $this->assertStringEndsWith('.log', (string) $handler->getUrl());
     }
 
     public function testAnEmptySubDirectoryWritesDirectlyToVarLog(): void
@@ -50,13 +50,13 @@ class HandlerTest extends TestCase
 
         $handler = new Handler($this->driver, $this->directoryList, 'orders.log', '');
 
-        self::assertStringStartsWith('/srv/app/var/log/orders-', (string) $handler->getUrl());
+        $this->assertStringStartsWith('/srv/app/var/log/orders-', (string) $handler->getUrl());
     }
 
     public function testItCreatesTheDirectoryWhenMissing(): void
     {
         $this->driver->method('isDirectory')->willReturn(false);
-        $this->driver->expects(self::once())
+        $this->driver->expects($this->once())
             ->method('createDirectory')
             ->with('/srv/app/var/log/acme');
 
@@ -76,8 +76,8 @@ class HandlerTest extends TestCase
         $handler = new Handler($this->driver, $this->directoryList, 'orders.log', 'acme');
 
         // Monolog appends the rotation date, so assert on the directory and stem.
-        self::assertStringStartsWith('/srv/app/var/log/acme/orders-', (string) $handler->getUrl());
-        self::assertStringEndsWith('.log', (string) $handler->getUrl());
+        $this->assertStringStartsWith('/srv/app/var/log/acme/orders-', (string) $handler->getUrl());
+        $this->assertStringEndsWith('.log', (string) $handler->getUrl());
     }
 
     public function testItRethrowsWhenTheDirectoryGenuinelyCannotBeCreated(): void
@@ -101,6 +101,6 @@ class HandlerTest extends TestCase
         // numeric value so the assertion holds on both.
         $level = $handler->getLevel();
 
-        self::assertSame(400, $level instanceof \Monolog\Level ? $level->value : $level);
+        $this->assertSame(400, $level instanceof \Monolog\Level ? $level->value : $level);
     }
 }
