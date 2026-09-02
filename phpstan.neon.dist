@@ -20,6 +20,7 @@ parameters:
         -
             message: '#extends @final class Monolog\\Logger#'
             path: Logger.php
+            # The framework's docblock varies across the versions this package supports.
+            reportUnmatched: false
         # Magento's models expose their columns through __call, so every
         # getter on a core model is invisible to static analysis.
-        - '#Call to an undefined method Magento\\[A-Za-z\\]+::(get|set|has)[A-Za-z]+\(\)#'
