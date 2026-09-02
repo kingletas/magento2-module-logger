@@ -11,6 +11,11 @@ parameters:
         - Test/*
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
+        # Monolog marks its Logger @final in a docblock rather than with the
+        # keyword, and Magento\Framework\Logger\Monolog subclasses it too.
+        -
+            message: '#extends @final class Monolog\\Logger#'
+            path: Logger.php
         # Magento's models expose their columns through __call, so every
         # getter on a core model is invisible to static analysis.
         - '#Call to an undefined method Magento\\[A-Za-z\\]+::(get|set|has)[A-Za-z]+\(\)#'

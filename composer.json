@@ -3,6 +3,12 @@
     "description": "Channel-aware Monolog logging for Magento 2 modules, with a var/log rotating file handler that respects DirectoryList.",
     "type": "magento2-module",
     "license": "OSL-3.0",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ],
     "require": {
         "php": ">=8.4",
         "magento/framework": ">=103.0",
