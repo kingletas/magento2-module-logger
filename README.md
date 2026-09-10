@@ -98,6 +98,7 @@ Monolog 2 and 3 are both supported; the level argument is normalised through `Mo
 ## Tests
 
 ```bash
+make install    # needs repo.magento.com credentials, for magento/framework
 make check
 ```
 
@@ -107,7 +108,7 @@ The coding standard and all four suites — 25 tests, no database and no Magento
 make test SUITE=behaviour
 ```
 
-The suites run against a real Magento installation without being installed into it. `M2_VENDOR` names that installation's `vendor` directory, and `Test/bootstrap.php` builds an autoloader from its composer map — which is also why they work where the host's own `vendor/autoload.php` is broken.
+The suites read Magento's classes without being installed into a store. `make install` puts Magento in this package's `vendor` directory, and `Test/bootstrap.php` builds an autoloader from its composer map — which is also why they work where a store's own `vendor/autoload.php` is broken. `M2_VENDOR` points them at a different `vendor` directory.
 
 ---
 
