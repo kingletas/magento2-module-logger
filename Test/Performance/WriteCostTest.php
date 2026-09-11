@@ -1,16 +1,16 @@
 <?php
 /**
- * @package   Commerce_Logger
- * @copyright Copyright (c) the Commerce modules authors
+ * @package   Kingletas_Logger
+ * @copyright Copyright (c) the Kingletas modules authors
  * @license   OSL-3.0 https://opensource.org/licenses/OSL-3.0
  */
 
 declare(strict_types=1);
 
-namespace Commerce\Logger\Test\Performance;
+namespace Kingletas\Logger\Test\Performance;
 
-use Commerce\Logger\Handler;
-use Commerce\Logger\Logger;
+use Kingletas\Logger\Handler;
+use Kingletas\Logger\Logger;
 use Magento\Framework\App\Filesystem\DirectoryList as AppDirectoryList;
 use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\DriverInterface;
@@ -32,17 +32,17 @@ class WriteCostTest extends TestCase
 
         // Monolog opens the stream on the first record, so the directory has to
         // be real.
-        $this->logRoot = sys_get_temp_dir() . '/commerce-logger-cost-' . bin2hex(random_bytes(6));
-        mkdir($this->logRoot . '/log/commerce', 0o777, true);
+        $this->logRoot = sys_get_temp_dir() . '/kingletas-logger-cost-' . bin2hex(random_bytes(6));
+        mkdir($this->logRoot . '/log/kingletas', 0o777, true);
     }
 
     protected function tearDown(): void
     {
-        foreach (glob($this->logRoot . '/log/commerce/*') ?: [] as $file) {
+        foreach (glob($this->logRoot . '/log/kingletas/*') ?: [] as $file) {
             unlink($file);
         }
 
-        foreach ([$this->logRoot . '/log/commerce', $this->logRoot . '/log', $this->logRoot] as $directory) {
+        foreach ([$this->logRoot . '/log/kingletas', $this->logRoot . '/log', $this->logRoot] as $directory) {
             if (is_dir($directory)) {
                 rmdir($directory);
             }
@@ -130,6 +130,6 @@ class WriteCostTest extends TestCase
 
         // The driver is asked whether the directory is there and says yes,
         // which is the probe being counted.
-        return new Logger('commerce_cost', [new Handler($driver, $directoryList, 'cost.log', 'commerce')]);
+        return new Logger('kingletas_cost', [new Handler($driver, $directoryList, 'cost.log', 'kingletas')]);
     }
 }

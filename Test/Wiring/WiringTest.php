@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   Commerce_Logger
- * @copyright Copyright (c) the Commerce modules authors
+ * @package   Kingletas_Logger
+ * @copyright Copyright (c) the Kingletas modules authors
  * @license   OSL-3.0 https://opensource.org/licenses/OSL-3.0
  */
 
 declare(strict_types=1);
 
-namespace Commerce\Logger\Test\Wiring;
+namespace Kingletas\Logger\Test\Wiring;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -93,7 +93,7 @@ class WiringTest extends TestCase
     public function testTheBaseVirtualTypesKeepTheirPublishedNames(): void
     {
         $this->assertSame(
-            ['Commerce\Logger\Handler\Base', 'Commerce\Logger\Logger\Base'],
+            ['Kingletas\Logger\Handler\Base', 'Kingletas\Logger\Logger\Base'],
             array_keys($this->virtualTypes())
         );
     }

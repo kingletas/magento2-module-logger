@@ -27,7 +27,7 @@ Say what problem that solves, in the reader's own terms, before any mechanics.
 ## Step 1: install it
 
 ```bash
-composer require commerce/module-logger
+composer require kingletas/module-logger
 ```
 
 ## Step 2: point it at something

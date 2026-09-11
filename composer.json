@@ -1,5 +1,5 @@
 {
-    "name": "commerce/module-logger",
+    "name": "kingletas/module-logger",
     "description": "Channel-aware Monolog logging for Magento 2 modules, with a var/log rotating file handler that respects DirectoryList.",
     "type": "magento2-module",
     "license": "OSL-3.0",
@@ -27,7 +27,7 @@
             "registration.php"
         ],
         "psr-4": {
-            "Commerce\\Logger\\": ""
+            "Kingletas\\Logger\\": ""
         },
         "exclude-from-classmap": [
             "/Test/"

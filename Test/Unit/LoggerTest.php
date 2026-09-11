@@ -1,15 +1,15 @@
 <?php
 /**
- * @package   Commerce_Logger
- * @copyright Copyright (c) the Commerce modules authors
+ * @package   Kingletas_Logger
+ * @copyright Copyright (c) the Kingletas modules authors
  * @license   OSL-3.0 https://opensource.org/licenses/OSL-3.0
  */
 
 declare(strict_types=1);
 
-namespace Commerce\Logger\Test\Unit;
+namespace Kingletas\Logger\Test\Unit;
 
-use Commerce\Logger\Logger;
+use Kingletas\Logger\Logger;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger as MonologLogger;
 use Psr\Log\LoggerInterface;
@@ -23,12 +23,12 @@ class LoggerTest extends TestCase
 {
     public function testItIsAPsrLoggerSoConsumersCanTypeHintTheFrameworkInterface(): void
     {
-        $this->assertInstanceOf(LoggerInterface::class, new Logger('commerce'));
+        $this->assertInstanceOf(LoggerInterface::class, new Logger('kingletas'));
     }
 
     public function testItIsAMonologLoggerSoHandlersAndProcessorsWorkUnchanged(): void
     {
-        $this->assertInstanceOf(MonologLogger::class, new Logger('commerce'));
+        $this->assertInstanceOf(MonologLogger::class, new Logger('kingletas'));
     }
 
     /**
@@ -36,13 +36,13 @@ class LoggerTest extends TestCase
      */
     public function testTheConstructorNameBecomesTheChannel(): void
     {
-        $this->assertSame('commerce_healthcheck', (new Logger('commerce_healthcheck'))->getName());
+        $this->assertSame('kingletas_healthcheck', (new Logger('kingletas_healthcheck'))->getName());
     }
 
     public function testHandlersPassedInAreTheOnesUsed(): void
     {
         $handler = new TestHandler();
-        $logger = new Logger('commerce', [$handler]);
+        $logger = new Logger('kingletas', [$handler]);
 
         $logger->warning('a queue consumer rethrew');
 
@@ -56,18 +56,18 @@ class LoggerTest extends TestCase
     public function testARecordCarriesTheChannel(): void
     {
         $handler = new TestHandler();
-        (new Logger('commerce_search', [$handler]))->error('backend refused the batch');
+        (new Logger('kingletas_search', [$handler]))->error('backend refused the batch');
 
         $records = $handler->getRecords();
 
         $this->assertCount(1, $records);
-        $this->assertSame('commerce_search', $records[0]['channel']);
+        $this->assertSame('kingletas_search', $records[0]['channel']);
     }
 
     public function testContextIsCarriedThroughToTheHandler(): void
     {
         $handler = new TestHandler();
-        (new Logger('commerce', [$handler]))->error('export failed', ['sku' => 'SKU-1']);
+        (new Logger('kingletas', [$handler]))->error('export failed', ['sku' => 'SKU-1']);
 
         $records = $handler->getRecords();
 

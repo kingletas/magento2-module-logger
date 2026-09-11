@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   Commerce_Logger
- * @copyright Copyright (c) the Commerce modules authors
+ * @package   Kingletas_Logger
+ * @copyright Copyright (c) the Kingletas modules authors
  * @license   OSL-3.0 https://opensource.org/licenses/OSL-3.0
  */
 
 declare(strict_types=1);
 
-namespace Commerce\Logger;
+namespace Kingletas\Logger;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
@@ -21,7 +21,7 @@ use Monolog\Logger as MonologLogger;
  */
 class Handler extends RotatingFileHandler
 {
-    public const string DEFAULT_SUBDIRECTORY = 'commerce';
+    public const string DEFAULT_SUBDIRECTORY = 'kingletas';
     public const string DEFAULT_FILENAME = 'default.log';
     public const int DEFAULT_MAX_FILES = 7;
 

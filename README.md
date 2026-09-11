@@ -1,4 +1,4 @@
-# Commerce_Logger
+# Kingletas_Logger
 
 A small, dependency-free logging package for Magento 2 modules. It gives you one class to point a `virtualType` at, and a rotating file handler that writes under the store's real `var/log` directory.
 
@@ -19,8 +19,8 @@ Core's handler is fine, but every module ends up re-declaring the same boilerpla
 ## Installation
 
 ```bash
-composer require commerce/module-logger
-bin/magento module:enable Commerce_Logger
+composer require kingletas/module-logger
+bin/magento module:enable Kingletas_Logger
 ```
 
 ---
@@ -30,7 +30,7 @@ bin/magento module:enable Commerce_Logger
 Declare one channel per module. No PHP required:
 
 ```xml
-<virtualType name="Acme\Orders\Logger\Handler" type="Commerce\Logger\Handler">
+<virtualType name="Acme\Orders\Logger\Handler" type="Kingletas\Logger\Handler">
     <arguments>
         <argument name="fileName" xsi:type="string">orders.log</argument>
         <argument name="subDirectory" xsi:type="string">acme</argument>
@@ -39,7 +39,7 @@ Declare one channel per module. No PHP required:
     </arguments>
 </virtualType>
 
-<virtualType name="Acme\Orders\Logger" type="Commerce\Logger\Logger">
+<virtualType name="Acme\Orders\Logger" type="Kingletas\Logger\Logger">
     <arguments>
         <argument name="name" xsi:type="string">acme_orders</argument>
         <argument name="handlers" xsi:type="array">
@@ -67,12 +67,12 @@ This writes to `var/log/acme/orders-2026-08-26.log`, keeping 14 days.
 
 ## Configuration reference
 
-`Commerce\Logger\Handler` constructor arguments:
+`Kingletas\Logger\Handler` constructor arguments:
 
 | Argument | Type | Default | Meaning |
 | --- | --- | --- | --- |
 | `fileName` | string | `default.log` | Base name; Monolog appends the rotation date |
-| `subDirectory` | string | `commerce` | Folder under `var/log`; `''` writes to `var/log` directly |
+| `subDirectory` | string | `kingletas` | Folder under `var/log`; `''` writes to `var/log` directly |
 | `maxFiles` | int | `7` | Rotated files retained; `0` keeps every file |
 | `level` | string | `debug` | Monolog level name (`debug`, `info`, `warning`, `error`, ...) |
 | `bubble` | bool | `true` | Whether records continue to later handlers |
@@ -88,7 +88,7 @@ Monolog 2 and 3 are both supported; the level argument is normalised through `Mo
 
 ## Gotchas
 
-- **Never extend `Magento\Framework\Logger\Monolog`.** That type carries core's `system`, `debug` and `syslog` handlers, so a "dedicated" channel is silently duplicated into `system.log` as well as its own file. `Commerce\Logger\Logger` extends `Monolog\Logger` for exactly this reason. Verify by counting the channel name in both files, not just yours.
+- **Never extend `Magento\Framework\Logger\Monolog`.** That type carries core's `system`, `debug` and `syslog` handlers, so a "dedicated" channel is silently duplicated into `system.log` as well as its own file. `Kingletas\Logger\Logger` extends `Monolog\Logger` for exactly this reason. Verify by counting the channel name in both files, not just yours.
 - **`maxFiles = 0` keeps every rotated file forever.** It's Monolog's "unlimited", not "none".
 - **The level is a string and is resolved at construction.** An unrecognised name throws while the object graph is being built, which surfaces as a DI error rather than a logging error.
 - **Do not redeclare `protected $fileName` with a type.** `RotatingFileHandler` declares it untyped, and typing a parent's untyped property is a PHP fatal. Pass the value through the constructor instead.
@@ -114,7 +114,7 @@ The suites read Magento's classes without being installed into a store. `make in
 
 ## Rebranding
 
-This package ships under the `Commerce` vendor namespace. To adopt your own, run the shared script from the repository root:
+This package ships under the `Kingletas` vendor namespace. To adopt your own, run the shared script from the repository root:
 
 ```bash
 php bin/rebrand Acme

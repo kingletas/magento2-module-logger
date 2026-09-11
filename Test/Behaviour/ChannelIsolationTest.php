@@ -1,16 +1,16 @@
 <?php
 /**
- * @package   Commerce_Logger
- * @copyright Copyright (c) the Commerce modules authors
+ * @package   Kingletas_Logger
+ * @copyright Copyright (c) the Kingletas modules authors
  * @license   OSL-3.0 https://opensource.org/licenses/OSL-3.0
  */
 
 declare(strict_types=1);
 
-namespace Commerce\Logger\Test\Behaviour;
+namespace Kingletas\Logger\Test\Behaviour;
 
-use Commerce\Logger\Handler;
-use Commerce\Logger\Logger;
+use Kingletas\Logger\Handler;
+use Kingletas\Logger\Logger;
 use Magento\Framework\App\Filesystem\DirectoryList as AppDirectoryList;
 use Magento\Framework\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Driver\File;
@@ -26,7 +26,7 @@ class ChannelIsolationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->logRoot = sys_get_temp_dir() . '/commerce-logger-' . bin2hex(random_bytes(6));
+        $this->logRoot = sys_get_temp_dir() . '/kingletas-logger-' . bin2hex(random_bytes(6));
         mkdir($this->logRoot . '/log', 0o777, true);
     }
 
@@ -37,8 +37,8 @@ class ChannelIsolationTest extends TestCase
 
     public function testEachChannelWritesOnlyToItsOwnFile(): void
     {
-        $orders = $this->channel('commerce_orders', 'orders.log');
-        $inventory = $this->channel('commerce_inventory', 'inventory.log');
+        $orders = $this->channel('kingletas_orders', 'orders.log');
+        $inventory = $this->channel('kingletas_inventory', 'inventory.log');
 
         $orders->error('an order failed to place');
         $inventory->error('a stock sync failed');
@@ -56,9 +56,9 @@ class ChannelIsolationTest extends TestCase
      */
     public function testARecordNamesItsChannel(): void
     {
-        $this->channel('commerce_orders', 'orders.log')->warning('a coupon was rejected');
+        $this->channel('kingletas_orders', 'orders.log')->warning('a coupon was rejected');
 
-        $this->assertStringContainsString('commerce_orders', $this->contentsOf('orders'));
+        $this->assertStringContainsString('kingletas_orders', $this->contentsOf('orders'));
     }
 
     /**
@@ -67,7 +67,7 @@ class ChannelIsolationTest extends TestCase
      */
     public function testAChannelHonoursTheLevelItWasConfiguredWith(): void
     {
-        $logger = $this->channel('commerce_orders', 'orders.log', 'error');
+        $logger = $this->channel('kingletas_orders', 'orders.log', 'error');
 
         $logger->info('routine, and not worth a line');
         $logger->error('not routine');
@@ -84,7 +84,7 @@ class ChannelIsolationTest extends TestCase
     public function testAChannelHasNoHandlersItWasNotGiven(): void
     {
         $handler = $this->handler('orders.log');
-        $logger = new Logger('commerce_orders', [$handler]);
+        $logger = new Logger('kingletas_orders', [$handler]);
 
         $this->assertSame(
             [$handler],
@@ -94,13 +94,13 @@ class ChannelIsolationTest extends TestCase
     }
 
     /**
-     * All fourteen modules write into `var/log/commerce/`, so the directory is
+     * All fourteen modules write into `var/log/kingletas/`, so the directory is
      * the one thing they genuinely do share.
      */
     public function testChannelsInTheSameDirectoryKeepSeparateFiles(): void
     {
-        $this->channel('commerce_orders', 'orders.log')->error('first');
-        $this->channel('commerce_inventory', 'inventory.log')->error('second');
+        $this->channel('kingletas_orders', 'orders.log')->error('first');
+        $this->channel('kingletas_inventory', 'inventory.log')->error('second');
 
         $files = $this->logFiles();
 
@@ -119,7 +119,7 @@ class ChannelIsolationTest extends TestCase
             ->with(AppDirectoryList::LOG)
             ->willReturn($this->logRoot . '/log');
 
-        return new Handler(new File(), $directoryList, $fileName, 'commerce', 7, $level);
+        return new Handler(new File(), $directoryList, $fileName, 'kingletas', 7, $level);
     }
 
     /**
@@ -128,7 +128,7 @@ class ChannelIsolationTest extends TestCase
      */
     private function contentsOf(string $stem): string
     {
-        $matches = glob($this->logRoot . '/log/commerce/' . $stem . '-*.log') ?: [];
+        $matches = glob($this->logRoot . '/log/kingletas/' . $stem . '-*.log') ?: [];
 
         $this->assertNotSame([], $matches, sprintf('Nothing was written for the "%s" channel.', $stem));
 
@@ -140,7 +140,7 @@ class ChannelIsolationTest extends TestCase
      */
     private function logFiles(): array
     {
-        return array_map('basename', glob($this->logRoot . '/log/commerce/*.log') ?: []);
+        return array_map('basename', glob($this->logRoot . '/log/kingletas/*.log') ?: []);
     }
 
     private function removeDirectory(string $directory): void
