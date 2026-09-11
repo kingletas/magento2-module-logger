@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.0.0
+
 The vendor is now Kingletas: the package is `kingletas/module-logger`, the namespace
 `Kingletas\Logger` and the module `Kingletas_Logger`, and every config
 section, table, console command and queue name starts with `kingletas`
