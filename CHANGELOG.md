@@ -1,10 +1,13 @@
 # Changelog
 
-## Unreleased
+## 3.0.1 - 2026-09-25
 
 Tooling only. Release notes join each changelog paragraph onto one line,
 because a release page turns every newline into a line break. Nothing about
 how the module behaves changed.
+
+The module's CI resolves the coding standard outside the module's checkout,
+and its packaging scripts follow the one shared reference.
 
 ## 3.0.0
 
